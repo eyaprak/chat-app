@@ -199,6 +199,18 @@
             })
         });
 
+        $('#clear-msg').on('click', (e) => {
+            e.preventDefault()
+            socket.emit('clear')
+            socket.on('cleared', () => {
+                $('.message').remove()
+                $('.messages').append("<li class='message left appeared'><div class='text_wrapper'>Chat has been cleaned.</div></li>")
+            })
+
+
+
+        })
+
 
     }
 

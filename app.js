@@ -134,8 +134,10 @@ mongoose.connection.on("connected", (err, res) => {
                     //Remove all chats from collection
                     Chat.remove({}, function () {
                         //Emit cleared
+                      
+                    }).then(()=>{
                         socket.emit('cleared')
-                    })
+                    }).catch((err)=>{console.log(err)})
                 })
 
                 socket.on('disconnect', () => {
