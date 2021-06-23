@@ -14,6 +14,8 @@ const io = socketio(server);
 
 const Chat = require('./models/Chat');
 
+const config = require('./config.json');
+
 const {
     userJoin,
     userLeave,
@@ -33,7 +35,7 @@ const port = process.env.PORT || 3000
 app.use(bodyParser.urlencoded({ extended: false }))
 
 
-mongoose.connect("mongodb+srv://keimaxezi:keimaxezi@cluster0.dbp6m.mongodb.net/chatApp?retryWrites=true&w=majority", {
+mongoose.connect(config.mongoDBConnectionString, {
     useNewUrlParser: "true",
     useUnifiedTopology: "true"
 })
@@ -43,7 +45,7 @@ mongoose.connection.on("error", err => {
 
 
 var store = new mongoDbStore({
-    uri: "mongodb+srv://keimaxezi:keimaxezi@cluster0.dbp6m.mongodb.net/chatApp?retryWrites=true&w=majority",
+    uri: config.mongoDBConnectionString,
     collection: 'mySessions'
 })
 
