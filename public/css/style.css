@@ -335,7 +335,7 @@ span.avatar-text-right {
 }
 .mobile-online-panel{
   display:none;
-  position:absolute;
+  position:fixed;
   bottom: 18px;
 }
 .show-online-users{
@@ -397,7 +397,7 @@ span.avatar-text-right {
     border-radius: 50px;
     bottom:10px;
     right:10px;
-    position:absolute;
+    position:fixed;
     box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
     background-color: #f8f8f8;
   }
