@@ -14,7 +14,7 @@ router.get('/register', adminController.getRegister)
 
 router.post('/register', adminController.postRegister)
 
-router.post('/logout', adminController.postLogout)
+router.get('/logout', adminController.getLogout)
 
 
 

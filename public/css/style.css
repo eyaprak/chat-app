@@ -350,6 +350,14 @@ span.avatar-text-right {
 .online-users-cart {
   display: none;
 }
+.list-group-item >.fa-times-circle{
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+}
 
 @media screen and (max-width: 760px) {
   .online-panel-right {
@@ -429,10 +437,8 @@ span.avatar-text-right {
     position: absolute;
     top: 0;
 }
-.col-sm-2.text-right.mt-1.close-cross {
-  position: absolute;
-  top: 2px;
-}
+
+
   @keyframes blinker {  
     50% { opacity: 0; }
     } 

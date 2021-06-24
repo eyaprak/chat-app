@@ -1,6 +1,10 @@
 const User = require('../models/User')
 const Chat = require('../models/Chat')
 const bcrypt = require('bcrypt')
+const {
+    userLeave
+} = require('../views/utils/users');
+
 const getIndex = (req, res) => {
     //console.log(req.session.user);
     Chat.find({})
@@ -9,7 +13,8 @@ const getIndex = (req, res) => {
                 title: "Homepage",
                 chatData: chatData,
                 isAuthenticated: req.session.isAuthenticated,
-                userName: req.session.user.name
+                sessionid: req.session.id,
+                user: req.session.user
             })
         }).catch((err) => { console.log(err) })
 }
@@ -75,10 +80,11 @@ const postRegister = (req, res) => {
 
 }
 
-const postLogout = (req, res) => {
+const getLogout = (req, res) => {
     req.session.destroy();
     res.redirect('/login')
 }
+
 
 module.exports = {
     getIndex,
@@ -86,5 +92,5 @@ module.exports = {
     postLogin,
     getRegister,
     postRegister,
-    postLogout
+    getLogout
 }

@@ -13,8 +13,7 @@
     var username = element('username')
     var objDiv = element('messages')
     username = username.innerHTML
-
-
+    var sessionID = $('#sessionID').html().trim()
 
 
     //Set default status
@@ -49,16 +48,12 @@
     if (socket !== undefined) {
         console.log("connected to socket")
 
-        socket.emit('joinRoom', username.trim());
+        socket.emit('joinRoom', username.trim(), sessionID);
         socket.emit('disconnectUser', username.trim());
 
         socket.on('output', (data) => {
 
 
-
-
-
-            //console.log(data)
             if (data.length) {
                 for (var x = 0; x < data.length; x++) {
 
@@ -112,17 +107,7 @@
                 var objDiv = element('messages')
                 objDiv.scrollTop = objDiv.scrollHeight;
 
-
-                //console.log($('.messages>.message').last().attr('class'))
             }
-
-
-
-
-
-
-
-
         });
 
 
@@ -189,7 +174,15 @@
 
 
         socket.on('roomMessage', (message) => {
-            $('.message:last-child').after("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
+            var messageLenght = $('.message').length
+            let text = messageLenght > 0 ? '.message:last-child' : '.messages'
+            if (messageLenght > 0) {
+                $(text).after("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
+            } else {
+                $(text).append("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
+            }
+
+
             objDiv.scrollTop = objDiv.scrollHeight;
         });
         socket.on('roomUsers', ({ users }) => {
@@ -199,18 +192,31 @@
             })
         });
 
-        $('#clear-msg').on('click', (e) => {
-            e.preventDefault()
+
+
+        $('.clear-msg').on('click', (e) => {
             socket.emit('clear')
-            socket.on('cleared', () => {
-                $('.message').remove()
-                $('.messages').append("<li class='message left appeared'><div class='text_wrapper'>Chat has been cleaned.</div></li>")
-            })
-
-
-
+            e.preventDefault()
+            $('.message').remove()
+            $('.messages').append("<li class='message left appeared'><div class='text_wrapper'>Chat has been cleaned.</div></li>")
+            $('.online-users-cart').hide("slide");
         })
 
+        socket.on('cleared', () => {
+            $('.message').remove()
+            $('.messages').append("<li class='message left appeared'><div class='text_wrapper'>Chat has been cleaned.</div></li>")
+            $('.online-users-cart').hide("slide");
+        })
+
+        $('.open-panel>span, .close-cross, .show-online-users, .online-users-shadow ').on('click', () => {
+            $('.online-users-cart').toggle("slide");
+        })
+
+        $('.logout-button').on('click', () => {
+            if (confirm('Do you want to leave the chat?')) {
+                window.location = '/logout'
+            }
+        })
 
     }
 

@@ -80,10 +80,11 @@ mongoose.connection.on("connected", (err, res) => {
             //connect client
             io.on('connection', socket => {
 
-                socket.on('joinRoom', (username) => {
-                    const user = userJoin(socket.id, username)
 
-                    socket.broadcast.emit("roomMessage", username + " joined the chat room.");
+                socket.on('joinRoom', (username, sessionid) => {
+                    const user = userJoin(socket.id, username, sessionid)
+
+                    socket.broadcast.emit("roomMessage", user.username + " joined the chat room.");
                     io.emit('roomUsers', { users: getUsers() })
 
                 })
@@ -132,13 +133,12 @@ mongoose.connection.on("connected", (err, res) => {
                 //Handle clear
                 socket.on('clear', function () {
                     //Remove all chats from collection
-                    Chat.remove({}, function () {
+                    Chat.deleteMany({}, function () {
                         //Emit cleared
-                      
-                    }).then(()=>{
-                        socket.emit('cleared')
-                    }).catch((err)=>{console.log(err)})
+                    });
+                    socket.broadcast.emit('cleared')
                 })
+
 
                 socket.on('disconnect', () => {
                     const user = userLeave(socket.id);
