@@ -1,5 +1,7 @@
+# Node.JS Chat App
+
 ## General info
-This project has made with Node.js, Express.js, Socket.io and MongoDB technologies. This is a simple chat application that you can chat with others. You can see left, join and online users and you can receive a message from them in real time.
+This project has made with `Node.js`, `Express.js`, `Socket.io` and `MongoDB` technologies. This is a `chat application` that you can chat with others. You can see left, join and online users and you can receive a message from them in real time. You can also send a `shake` to „others” with the sound. The admin user, who has admin permission, can clean the all chat by click the `clear msg button`.
 
 
 ## Setup
