@@ -268,11 +268,12 @@
         } else {
             $(text).append("<li class='message right appeared'><div class='text_wrapper'>You shacked the chat window</div></li>")
         }
-        $('#chat_window').addClass('animate__animated animate__shakeX')
-        $('#vibration-button').attr("disabled",true)
+        //$('#chat_window').addClass('animate__animated animate__shakeX')
+        $('#vibration-button').attr("disabled", true)
+        
         setTimeout(() => {
-            $('#chat_window').removeClass('animate__animated animate__shakeX')
-            $('#vibration-button').attr("disabled",false)
+          //  $('#chat_window').removeClass('animate__animated animate__shakeX')
+            $('#vibration-button').attr("disabled", false)
         }, 2000)
 
         objDiv.scrollTop = objDiv.scrollHeight;
@@ -286,11 +287,12 @@
         } else {
             $(text).append("<li class='message left appeared'><div class='text_wrapper'>" + msg + "</div></li>")
         }
-
+        
         $('#chat_window').addClass('animate__animated animate__shakeX')
         setTimeout(() => {
             $('#chat_window').removeClass('animate__animated animate__shakeX')
         }, 2000)
+        
         objDiv.scrollTop = objDiv.scrollHeight;
         document.getElementById("vibrationSound").play();
     })
