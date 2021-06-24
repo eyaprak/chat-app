@@ -1,10 +1,12 @@
 # ChatApp
 
 ## General info
-This project has made with Node.js, Express.js, Socket.io and MongoDB technologies.
+This project has made with Node.js, Express.js, Socket.io and MongoDB technologies. This is a simple chat application that you can chat with others. You can see left, join and online users and you can receive a message from them in real time.
+
 
 ## Setup
 To run this project, install it locally using npm:
+The mongoDB connection string needs to change in `config.json` file to connect mongoDB.
 
 ```
 $ cd ../chat-app
