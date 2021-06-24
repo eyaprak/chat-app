@@ -186,6 +186,7 @@
             objDiv.scrollTop = objDiv.scrollHeight;
         });
         socket.on('roomUsers', ({ users }) => {
+            document.getElementById("joinChatSound").play();
             $('.list-group').html('')
             users.forEach(user => {
                 $('.list-group').append("<li class='list-group-item'><i class='fas fa-circle'></i><span class='online-user-text'> " + user.username + "</span></li>")
@@ -193,6 +194,10 @@
         });
 
 
+        
+        socket.on('joinRoomSound', ()=>{
+            
+        })
 
         $('.clear-msg').on('click', (e) => {
             socket.emit('clear')

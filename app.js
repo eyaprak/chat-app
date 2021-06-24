@@ -86,7 +86,7 @@ mongoose.connection.on("connected", (err, res) => {
 
                     socket.broadcast.emit("roomMessage", user.username + " joined the chat room.");
                     io.emit('roomUsers', { users: getUsers() })
-
+                    socket.emit('joinRoomSound')
                 })
 
 
