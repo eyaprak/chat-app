@@ -13,7 +13,9 @@
     var username = element('username')
     var objDiv = element('messages')
     username = username.innerHTML
-    var sessionID = $('#sessionID').html().trim()
+
+    var messageLenght = $('.message').length
+    let text = messageLenght > 0 ? '.message:last-child' : '.messages'
 
 
     //Set default status
@@ -48,7 +50,7 @@
     if (socket !== undefined) {
         console.log("connected to socket")
 
-        socket.emit('joinRoom', username.trim(), sessionID);
+        socket.emit('joinRoom', username.trim());
         socket.emit('disconnectUser', username.trim());
 
         socket.on('output', (data) => {
@@ -163,30 +165,28 @@
             e.preventDefault();
             objDiv.scrollTop = objDiv.scrollHeight;
             $('#msg').val('')
-            $('#btn-send').on('click', function () {
-                socket.on('playMessageSound', () => {
-                    document.getElementById("myAudio").play();
-                })
-            });
 
 
         })
 
 
         socket.on('roomMessage', (message) => {
-            var messageLenght = $('.message').length
-            let text = messageLenght > 0 ? '.message:last-child' : '.messages'
             if (messageLenght > 0) {
                 $(text).after("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
             } else {
                 $(text).append("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
             }
-
+            socket.on('joinRoomSound', () => {
+                let joinChatSound = document.getElementById("joinChatSound")
+                if (!joinChatSound.muted) {
+                    joinChatSound.play();
+                    joinChatSound.muted = false;
+                }
+            })
 
             objDiv.scrollTop = objDiv.scrollHeight;
         });
         socket.on('roomUsers', ({ users }) => {
-            document.getElementById("joinChatSound").play();
             $('.list-group').html('')
             users.forEach(user => {
                 $('.list-group').append("<li class='list-group-item'><i class='fas fa-circle'></i><span class='online-user-text'> " + user.username + "</span></li>")
@@ -194,10 +194,8 @@
         });
 
 
-        
-        socket.on('joinRoomSound', ()=>{
-            
-        })
+
+
 
         $('.clear-msg').on('click', (e) => {
             socket.emit('clear')
@@ -223,7 +221,87 @@
             }
         })
 
+        socket.on('playMessageSound', () => {
+            document.getElementById("messageSound").play();
+        })
+
+
+
+        $('#open-sound').on('click', () => {
+            let joinChatAudio = document.getElementById("joinChatSound");
+            let messageSound = document.getElementById("messageSound");
+
+            let vibrationSound = document.getElementById("vibrationSound");
+            joinChatAudio.volume = 1;
+            messageSound.volume = 1;
+            vibrationSound.volume = 1;
+            vibrationSound.muted = false;
+            joinChatAudio.muted = false;
+            messageSound.muted = false;
+            $('#open-sound').hide()
+            $('#mute-sound').show()
+        })
+        $('#mute-sound').on('click', () => {
+            let joinChatAudio = document.getElementById("joinChatSound");
+            let messageSound = document.getElementById("messageSound");
+            let vibrationSound = document.getElementById("vibrationSound");
+            joinChatAudio.volume = 0;
+            messageSound.volume = 0;
+            vibrationSound.volume = 0;
+            joinChatAudio.muted = true;
+            messageSound.muted = true;
+            vibrationSound.muted = true;
+            $('#open-sound').show()
+            $('#mute-sound').hide()
+
+        })
+
     }
 
+
+
+    $('#vibration-button').on('click', () => {
+        socket.emit('shakedUser', username.trim())
+
+        if (messageLenght > 0) {
+            $(text).after("<li class='message right appeared'><div class='text_wrapper'>You shacked the chat window</div></li>")
+        } else {
+            $(text).append("<li class='message right appeared'><div class='text_wrapper'>You shacked the chat window</div></li>")
+        }
+        $('#chat_window').addClass('animate__animated animate__shakeX')
+        $('#vibration-button').attr("disabled",true)
+        setTimeout(() => {
+            $('#chat_window').removeClass('animate__animated animate__shakeX')
+            $('#vibration-button').attr("disabled",false)
+        }, 2000)
+
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+
+    })
+
+    socket.on('shakeChat', (msg) => {
+        if (messageLenght > 0) {
+            $(text).after("<li class='message left appeared'><div class='text_wrapper'>" + msg + "</div></li>")
+        } else {
+            $(text).append("<li class='message left appeared'><div class='text_wrapper'>" + msg + "</div></li>")
+        }
+
+        $('#chat_window').addClass('animate__animated animate__shakeX')
+        setTimeout(() => {
+            $('#chat_window').removeClass('animate__animated animate__shakeX')
+        }, 2000)
+        objDiv.scrollTop = objDiv.scrollHeight;
+        document.getElementById("vibrationSound").play();
+    })
+
+    document.getElementById("joinChatSound").muted = true;
+    document.getElementById("messageSound").muted = true;
+    document.getElementById("vibrationSound").muted = true;
+    $('#mute-sound').hide()
+    /*
+    $('#chat_window').addClass('animate__animated animate__shakeX')
+    
+    */
 
 })();

@@ -1,16 +1,24 @@
 <div class="chat_container">
-    <audio id="myAudio" autoplay="false" autostart="false">
-        <source src="/music/msn-ses.mp3" type="audio/ogg">
+    <audio id="messageSound" autoplay="false" autostart="false">
+        <source src="/music/message-sound.mp3" type="audio/ogg">
     </audio>
     <audio id="joinChatSound" autoplay="false" autostart="false">
-        <source src="/music/ses123.mp3" type="audio/ogg">
+        <source src="/music/join-chat-sound.mp3" type="audio/ogg">
     </audio>
-    <div class="chat_window" id="chat_window">
+    <audio id="vibrationSound" autoplay="false" autostart="false">
+        <source src="/music/vibration-sound.mp3" type="audio/ogg">
+    </audio>
+    <div class="chat_window" id="chat_window"> 
         <div class="top_menu">
             <div class="buttons">
+                <button class="btn btn-primary mt-0 top-buttons" id="open-sound">Open Sound <i class="fas fa-volume-up"></i></button>
+                <button class="btn btn-primary mt-0 top-buttons" id="mute-sound"> Mute Sound <i class="fas fa-volume-mute"></i></button>
+                <button class="btn btn-primary mt-0 top-buttons" id="vibration-button"> Shake <img src="./images/vibration-picture.png"/></button>
+                <!--
                 <div class="button close"></div>
                 <div class="button minimize"></div>
                 <div class="button maximize"></div>
+                -->
             </div>
             <div class="title" id="title">
                 ChatApp

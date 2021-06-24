@@ -358,8 +358,36 @@ span.avatar-text-right {
   font-size: 20px;
   cursor: pointer;
 }
+.top-buttons {
+  position: relative;
+  top: -7px;
+}
+.bottom_wrapper{
+  position:relative!important;
+}
+
 
 @media screen and (max-width: 760px) {
+  .top-buttons {
+    position: relative;
+    top: -2px;
+    padding: 4px;
+    font-size: 13px;
+}
+.title{
+  position: relative;
+    top: -26px;
+}
+.top-buttons img{
+  width: 27px;
+  vertical-align: bottom;
+}
+.logout-button{
+  top: 22px;
+  padding: 4px;
+  font-size: 13px;
+}
+
   .online-panel-right {
     display:block;
     background-color: red;
@@ -375,10 +403,10 @@ span.avatar-text-right {
     color:black;
 }
   .messages {
-    height: 400px;
+    height: 340px;
   }
   .chat_container{
-    height:560px;
+    height:500px;
     top:48%;
   }
   .online-users-div{

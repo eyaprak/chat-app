@@ -81,18 +81,27 @@ mongoose.connection.on("connected", (err, res) => {
             io.on('connection', socket => {
 
 
-                socket.on('joinRoom', (username, sessionid) => {
-                    const user = userJoin(socket.id, username, sessionid)
+                socket.on('joinRoom', (username) => {
+                    const user = userJoin(socket.id, username)
 
                     socket.broadcast.emit("roomMessage", user.username + " joined the chat room.");
                     io.emit('roomUsers', { users: getUsers() })
-                    socket.emit('joinRoomSound')
+                    socket.broadcast.emit('joinRoomSound')
+
                 })
+
+
+                socket.on('shakedUser', (user) => {
+                    socket.broadcast.emit('shakeChat', user + " shacked the chat window");
+                });
+
+
 
 
                 sendStatus = function (s) {
                     socket.emit('status', s)
                 }
+
 
                 Chat.find().limit(100).sort({ _id: 1 }).exec(function (err, res) {
                     if (err) {
@@ -140,6 +149,8 @@ mongoose.connection.on("connected", (err, res) => {
                 })
 
 
+
+
                 socket.on('disconnect', () => {
                     const user = userLeave(socket.id);
 
@@ -150,6 +161,7 @@ mongoose.connection.on("connected", (err, res) => {
                     io.emit('roomUsers', { users: getUsers() })
 
                 })
+
 
             })
 
