@@ -14,7 +14,8 @@
     var objDiv = element('messages')
     username = username.innerHTML
 
-
+    var messageLenght = $('.message').length
+    let text = messageLenght > 0 ? '.message:last-child' : '.messages'
 
 
     //Set default status
@@ -55,10 +56,6 @@
         socket.on('output', (data) => {
 
 
-
-
-
-            //console.log(data)
             if (data.length) {
                 for (var x = 0; x < data.length; x++) {
 
@@ -112,17 +109,7 @@
                 var objDiv = element('messages')
                 objDiv.scrollTop = objDiv.scrollHeight;
 
-
-                //console.log($('.messages>.message').last().attr('class'))
             }
-
-
-
-
-
-
-
-
         });
 
 
@@ -178,18 +165,25 @@
             e.preventDefault();
             objDiv.scrollTop = objDiv.scrollHeight;
             $('#msg').val('')
-            $('#btn-send').on('click', function () {
-                socket.on('playMessageSound', () => {
-                    document.getElementById("myAudio").play();
-                })
-            });
 
 
         })
 
 
         socket.on('roomMessage', (message) => {
-            $('.message:last-child').after("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
+            if (messageLenght > 0) {
+                $(text).after("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
+            } else {
+                $(text).append("<li class='message left appeared'><div class='text_wrapper'>" + message + "</div></li>")
+            }
+            socket.on('joinRoomSound', () => {
+                let joinChatSound = document.getElementById("joinChatSound")
+                if (!joinChatSound.muted) {
+                    joinChatSound.play();
+                    joinChatSound.muted = false;
+                }
+            })
+
             objDiv.scrollTop = objDiv.scrollHeight;
         });
         socket.on('roomUsers', ({ users }) => {
@@ -200,7 +194,116 @@
         });
 
 
+
+
+
+        $('.clear-msg').on('click', (e) => {
+            socket.emit('clear')
+            e.preventDefault()
+            $('.message').remove()
+            $('.messages').append("<li class='message left appeared'><div class='text_wrapper'>Chat has been cleaned.</div></li>")
+            $('.online-users-cart').hide("slide");
+        })
+
+        socket.on('cleared', () => {
+            $('.message').remove()
+            $('.messages').append("<li class='message left appeared'><div class='text_wrapper'>Chat has been cleaned.</div></li>")
+            $('.online-users-cart').hide("slide");
+        })
+
+        $('.open-panel>span, .close-cross, .show-online-users, .online-users-shadow ').on('click', () => {
+            $('.online-users-cart').toggle("slide");
+        })
+
+        $('.logout-button').on('click', () => {
+            if (confirm('Do you want to leave the chat?')) {
+                window.location = '/logout'
+            }
+        })
+
+        socket.on('playMessageSound', () => {
+            document.getElementById("messageSound").play();
+        })
+
+
+
+        $('#open-sound').on('click', () => {
+            let joinChatAudio = document.getElementById("joinChatSound");
+            let messageSound = document.getElementById("messageSound");
+
+            let vibrationSound = document.getElementById("vibrationSound");
+            joinChatAudio.volume = 1;
+            messageSound.volume = 1;
+            vibrationSound.volume = 1;
+            vibrationSound.muted = false;
+            joinChatAudio.muted = false;
+            messageSound.muted = false;
+            $('#open-sound').hide()
+            $('#mute-sound').show()
+        })
+        $('#mute-sound').on('click', () => {
+            let joinChatAudio = document.getElementById("joinChatSound");
+            let messageSound = document.getElementById("messageSound");
+            let vibrationSound = document.getElementById("vibrationSound");
+            joinChatAudio.volume = 0;
+            messageSound.volume = 0;
+            vibrationSound.volume = 0;
+            joinChatAudio.muted = true;
+            messageSound.muted = true;
+            vibrationSound.muted = true;
+            $('#open-sound').show()
+            $('#mute-sound').hide()
+
+        })
+
     }
 
+
+
+    $('#vibration-button').on('click', () => {
+        socket.emit('shakedUser', username.trim())
+
+        if (messageLenght > 0) {
+            $(text).after("<li class='message right appeared'><div class='text_wrapper'>You shacked the chat window</div></li>")
+        } else {
+            $(text).append("<li class='message right appeared'><div class='text_wrapper'>You shacked the chat window</div></li>")
+        }
+        //$('#chat_window').addClass('animate__animated animate__shakeX')
+        $('#vibration-button').attr("disabled", true)
+        
+        setTimeout(() => {
+          //  $('#chat_window').removeClass('animate__animated animate__shakeX')
+            $('#vibration-button').attr("disabled", false)
+        }, 2000)
+
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+
+    })
+
+    socket.on('shakeChat', (msg) => {
+        if (messageLenght > 0) {
+            $(text).after("<li class='message left appeared'><div class='text_wrapper'>" + msg + "</div></li>")
+        } else {
+            $(text).append("<li class='message left appeared'><div class='text_wrapper'>" + msg + "</div></li>")
+        }
+        
+        $('#chat_window').addClass('animate__animated animate__shakeX')
+        setTimeout(() => {
+            $('#chat_window').removeClass('animate__animated animate__shakeX')
+        }, 2000)
+        
+        objDiv.scrollTop = objDiv.scrollHeight;
+        document.getElementById("vibrationSound").play();
+    })
+
+    document.getElementById("joinChatSound").muted = true;
+    document.getElementById("messageSound").muted = true;
+    document.getElementById("vibrationSound").muted = true;
+    $('#mute-sound').hide()
+    /*
+    $('#chat_window').addClass('animate__animated animate__shakeX')
+    
+    */
 
 })();

@@ -335,7 +335,7 @@ span.avatar-text-right {
 }
 .mobile-online-panel{
   display:none;
-  position:absolute;
+  position:fixed;
   bottom: 18px;
 }
 .show-online-users{
@@ -350,8 +350,44 @@ span.avatar-text-right {
 .online-users-cart {
   display: none;
 }
+.list-group-item >.fa-times-circle{
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+}
+.top-buttons {
+  position: relative;
+  top: -7px;
+}
+.bottom_wrapper{
+  position:relative!important;
+}
+
 
 @media screen and (max-width: 760px) {
+  .top-buttons {
+    position: relative;
+    top: -2px;
+    padding: 4px;
+    font-size: 13px;
+}
+.title{
+  position: relative;
+    top: -26px;
+}
+.top-buttons img{
+  width: 27px;
+  vertical-align: bottom;
+}
+.logout-button{
+  top: 22px;
+  padding: 4px;
+  font-size: 13px;
+}
+
   .online-panel-right {
     display:block;
     background-color: red;
@@ -367,10 +403,10 @@ span.avatar-text-right {
     color:black;
 }
   .messages {
-    height: 530px;
+    height: 340px;
   }
   .chat_container{
-    height:684px;
+    height:500px;
     top:48%;
   }
   .online-users-div{
@@ -397,7 +433,7 @@ span.avatar-text-right {
     border-radius: 50px;
     bottom:10px;
     right:10px;
-    position:absolute;
+    position:fixed;
     box-shadow: 0 10px 20px rgb(0 0 0 / 15%);
     background-color: #f8f8f8;
   }
@@ -429,10 +465,8 @@ span.avatar-text-right {
     position: absolute;
     top: 0;
 }
-.col-sm-2.text-right.mt-1.close-cross {
-  position: absolute;
-  top: 2px;
-}
+
+
   @keyframes blinker {  
     50% { opacity: 0; }
     } 

@@ -1,34 +1,60 @@
 <div class="chat_container">
-    <audio id="myAudio" autoplay="false" autostart="false">
-        <source src="/music/msn-ses.mp3" type="audio/ogg">
+    <audio id="messageSound" autoplay="false" autostart="false">
+        <source src="/music/message-sound.mp3" type="audio/ogg">
     </audio>
-    <div class="chat_window" id="chat_window">
+    <audio id="joinChatSound" autoplay="false" autostart="false">
+        <source src="/music/join-chat-sound.mp3" type="audio/ogg">
+    </audio>
+    <audio id="vibrationSound" autoplay="false" autostart="false">
+        <source src="/music/vibration-sound.mp3" type="audio/ogg">
+    </audio>
+    <div class="chat_window" id="chat_window"> 
         <div class="top_menu">
             <div class="buttons">
+                <button class="btn btn-primary mt-0 top-buttons" id="open-sound">Open Sound <i class="fas fa-volume-up"></i></button>
+                <button class="btn btn-primary mt-0 top-buttons" id="mute-sound"> Mute Sound <i class="fas fa-volume-mute"></i></button>
+                <button class="btn btn-primary mt-0 top-buttons" id="vibration-button"> Shake <img src="./images/vibration-picture.png"/></button>
+                <!--
                 <div class="button close"></div>
                 <div class="button minimize"></div>
                 <div class="button maximize"></div>
+                -->
             </div>
             <div class="title" id="title">
                 ChatApp
             </div>
             <div id="status"></div>
-            <form action="/logout" method="post">
+            
                 <button class="btn btn-primary logout-button "><i class="fas fa-sign-out-alt"></i> Logout</button>
-            </form>
+            
         </div>
         <div class="row">
             <div class="col-md-10 messages-div pr-0">
                 <ul class="messages" id="messages"></ul>
             </div>
 
-            <div class="col-md-2 online-users-div pl-0">
-                <h4 class="text-center">Online Users</h4>
-                <ul class="list-group">
 
 
-                </ul>
+
+            <div class="col-md-2 online-users-div pl-0 pr-0">
+                <% if(user.admin===1){ %>
+                    <div class="btn-group btn-block">
+                        <button type="submit" class="btn btn-danger mt-1 clear-msg" name="clear-msg"
+                            data-toggle="tooltip" data-placement="top" title="Clear messages">Clear Msg</button>
+                        <!--<button type="submit" class="btn btn-success mt-1" id="clear-msg">de</button> -->
+                    </div>
+                    <% } %>
+                        <h4 class="text-center">Online Users</h4>
+                        <ul class="list-group">
+
+
+                        </ul>
+
+
+
+
             </div>
+
         </div>
 
         <form id="chat-form">
@@ -40,7 +66,13 @@
                 <button class="btn btn-primary btn-send" type="submit" class="text" id="btn-send"><i
                         class="far fa-paper-plane"></i> Send</button>
                 <div id="username" style="visibility: hidden; position:absolute">
-                    <%= userName %>
+                    <%= user.name %>
+                </div>
+                <div id="admin" style="visibility: hidden; position:absolute">
+                    <%= user.admin %>
+                </div>
+                <div id="sessionID" style="visibility: hidden; position:absolute">
+                    <%= sessionid %>
                 </div>
             </div>
         </form>
@@ -59,37 +91,33 @@
     <div class="row">
         <div class="online-users-shadow col-md-10"></div>
         <div class="online-panel-right col-md-2">
-            <div class="row">
-                <div class="col-sm-10 pl-3 pt-1">
-                    <h4>Online Users</h4>
+            <% if(user.admin===1) { %>
+                <div class="btn-group btn-block">
+                    <button type="submit" class="btn btn-danger mt-1 clear-msg" name="clear-msg" data-toggle="tooltip"
+                        data-placement="top" title="Clear messages">Clear Msg</button>
+                    <!--<button type="submit" class="btn btn-success mt-1" id="clear-msg">de</button> -->
                 </div>
-                <div class="col-sm-2 text-right mt-1 close-cross">
-                    <i class="far fa-times-circle" style="font-size:25px;"></i>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12  pr-0">
-                    <ul class="list-group">
-                    </ul>
-                </div>
-            </div>
+                <% } %>
+                    <div class="row">
+
+                        <div class="col-sm-10 pl-3 pt-1">
+                            <h4>Online Users</h4>
+                        </div>
+                        <div class="col-sm-2 text-right mt-1 close-cross">
+                            <i class="far fa-times-circle" style="font-size:25px;" data-toggle="tooltip"
+                                data-placement="top" title="Close Panel"></i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12  pr-0">
+                            <ul class="list-group">
+                            </ul>
+                        </div>
+                    </div>
         </div>
     </div>
 </div>
 
 <div class="mobile-online-panel open-panel">
     <span>Click to see <br />Online Users</span>
-    <!--
-    <ul class="list-inline">
-        <li class="list-inline-item"><i class="fas fa-circle"></i><span class="online-user-text"> Hasan</span></li>
-        <li class="list-inline-item"><i class="fas fa-circle"></i><span class="online-user-text"> Emrullah</span></li>
-        
-    </ul>
-    
-    <form>
-        <% if(userName=="Emrullah" ) {%>
-            <button class="btn btn-danger">Clear</button>
-        <% } %>
-    </form>
-    -->
 </div>
