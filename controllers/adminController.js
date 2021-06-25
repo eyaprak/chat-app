@@ -70,7 +70,6 @@ const postRegister = (req, res) => {
                         const userData = new User({ name, email, password: hashedPassword });
                         userData.save()
                             .then(() => {
-                                console.log("Giriş başarılı");
                                 res.redirect('/login?action=success')
                             }).catch((err) => { console.log(err) })
                     }

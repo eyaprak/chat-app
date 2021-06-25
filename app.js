@@ -14,7 +14,6 @@ const io = socketio(server);
 
 const Chat = require('./models/Chat');
 
-const config = require('./config.json');
 const dotenv = require('dotenv')
 
 const {
