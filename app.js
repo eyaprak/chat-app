@@ -15,6 +15,7 @@ const io = socketio(server);
 const Chat = require('./models/Chat');
 
 const config = require('./config.json');
+const dotenv = require('dotenv')
 
 const {
     userJoin,
@@ -25,6 +26,7 @@ const {
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'))
+dotenv.config();
 
 
 const port = process.env.PORT || 3000
@@ -35,7 +37,7 @@ const port = process.env.PORT || 3000
 app.use(bodyParser.urlencoded({ extended: false }))
 
 
-mongoose.connect(config.mongoDBConnectionString, {
+mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: "true",
     useUnifiedTopology: "true"
 })
@@ -45,7 +47,7 @@ mongoose.connection.on("error", err => {
 
 
 var store = new mongoDbStore({
-    uri: config.mongoDBConnectionString,
+    uri: process.env.CONNECTION_STRING,
     collection: 'mySessions'
 })
 
